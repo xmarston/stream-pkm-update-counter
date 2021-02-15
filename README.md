@@ -22,6 +22,7 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+    <li><a href="#notes">Notes</a></li>
   </ol>
 </details>
 
@@ -72,3 +73,7 @@ So the command will look like this:
 ```bash
 python3 process_stream.py -inputVideo 0 -file PATH_OF_THE_FILE -phrase "PHRASE_TO_SEARCH"
 ```
+
+## Notes
+
+Didn't found why but you need to execute this script before your OBS or whatever software you are using for streaming because if you open after the script will crash.
