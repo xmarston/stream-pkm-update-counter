@@ -23,6 +23,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#notes">Notes</a></li>
+    <li><a href="#demo">Demo</a></li>
   </ol>
 </details>
 
@@ -77,3 +78,7 @@ python3 process_stream.py -inputVideo 0 -file PATH_OF_THE_FILE -phrase "PHRASE_T
 ## Notes
 
 Didn't found why but you need to execute this script before your OBS or whatever software you are using for streaming because if you open after the script will crash.
+
+## Demo
+
+[![Demo Video](http://img.youtube.com/vi/rAqJKe2oneA/0.jpg)](http://www.youtube.com/watch?v=rAqJKe2oneA "Demonstration Stream PKM Counter Auto Updater")
