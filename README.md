@@ -35,7 +35,7 @@ The goal of this project is to automate the repetitive task of increasing the va
 
 ### Built With
 
-* Python 3.8+
+* Python 3.13+
 * [OpenCV](https://opencv.org/)
 * [Tesseract](https://github.com/tesseract-ocr/tesseract)
 * Docker (optional)
