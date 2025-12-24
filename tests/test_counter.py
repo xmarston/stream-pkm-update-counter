@@ -1,7 +1,6 @@
 import os
 import tempfile
 import threading
-import pytest
 
 from stream_counter.counter import Counter
 

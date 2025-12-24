@@ -1,8 +1,6 @@
 from unittest.mock import patch, MagicMock
 import numpy as np
 
-import pytest
-
 from stream_counter.capture import VideoCapture
 
 

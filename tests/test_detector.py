@@ -3,8 +3,6 @@ import time
 import tempfile
 from unittest.mock import patch, MagicMock
 
-import pytest
-
 from stream_counter.counter import Counter
 from stream_counter.detector import PhraseDetector
 
