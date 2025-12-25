@@ -38,7 +38,7 @@ class TestConfigureTesseract:
                             configure_tesseract()
 
                             assert mock_pytesseract.pytesseract.tesseract_cmd == tesseract_exe
-                            assert os.environ.get('TESSDATA_PREFIX') == tesseract_dir
+                            assert os.environ.get('TESSDATA_PREFIX') == tessdata_dir
 
     def test_frozen_linux_with_tesseract(self):
         """When running as frozen Linux bundle with Tesseract, should configure path."""
@@ -59,7 +59,7 @@ class TestConfigureTesseract:
                             configure_tesseract()
 
                             assert mock_pytesseract.pytesseract.tesseract_cmd == tesseract_bin
-                            assert os.environ.get('TESSDATA_PREFIX') == tesseract_dir
+                            assert os.environ.get('TESSDATA_PREFIX') == tessdata_dir
 
     def test_frozen_without_tesseract(self):
         """When running as frozen bundle without Tesseract, should not error."""

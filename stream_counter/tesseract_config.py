@@ -19,7 +19,7 @@ def configure_tesseract():
         if os.path.exists(tesseract_path):
             pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
-            # Set TESSDATA_PREFIX for language data
+            # Set TESSDATA_PREFIX for language data (must point to tessdata directory itself)
             tessdata_dir = os.path.join(bundle_dir, 'tesseract', 'tessdata')
             if os.path.exists(tessdata_dir):
-                os.environ['TESSDATA_PREFIX'] = os.path.join(bundle_dir, 'tesseract')
+                os.environ['TESSDATA_PREFIX'] = tessdata_dir
