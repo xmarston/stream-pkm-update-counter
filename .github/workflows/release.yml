@@ -1,0 +1,118 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install -r requirements-build.txt
+
+      - name: Download Tesseract
+        shell: pwsh
+        run: |
+          $tesseractUrl = "https://github.com/UB-Mannheim/tesseract/releases/download/v5.5.0.20241111/tesseract-ocr-w64-setup-5.5.0.20241111.exe"
+          Invoke-WebRequest -Uri $tesseractUrl -OutFile tesseract-installer.exe
+          Start-Process -FilePath .\tesseract-installer.exe -ArgumentList '/S', '/D=C:\Tesseract' -Wait
+
+          # Copy Tesseract to project directory
+          New-Item -ItemType Directory -Force -Path tesseract-win
+          Copy-Item -Path "C:\Tesseract\*" -Destination "tesseract-win" -Recurse
+
+      - name: Build executable
+        env:
+          TESSERACT_PATH: tesseract-win
+        run: pyinstaller stream_counter.spec
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stream-counter-windows
+          path: dist/stream-counter.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-eng libgl1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install -r requirements-build.txt
+
+      - name: Prepare Tesseract bundle
+        run: |
+          mkdir -p tesseract-linux/tessdata
+          cp $(which tesseract) tesseract-linux/
+          cp /usr/share/tesseract-ocr/5/tessdata/eng.traineddata tesseract-linux/tessdata/
+
+          # Copy required libraries
+          ldd $(which tesseract) | grep "=> /" | awk '{print $3}' | xargs -I {} cp {} tesseract-linux/ 2>/dev/null || true
+
+      - name: Build executable
+        env:
+          TESSERACT_PATH: tesseract-linux
+        run: pyinstaller stream_counter.spec
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stream-counter-linux
+          path: dist/stream-counter
+
+  release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: stream-counter-windows
+          path: windows
+
+      - name: Download Linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: stream-counter-linux
+          path: linux
+
+      - name: Prepare release files
+        run: |
+          mv windows/stream-counter.exe stream-counter-windows.exe
+          mv linux/stream-counter stream-counter-linux
+          chmod +x stream-counter-linux
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            stream-counter-windows.exe
+            stream-counter-linux
+          generate_release_notes: true
