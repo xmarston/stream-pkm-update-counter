@@ -4,6 +4,12 @@
   <img width="250" src="https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/twitch-512.png" />
 </p>
 
+<p align="center">
+  <a href="https://github.com/xmarston/stream-pkm-update-counter/actions/workflows/ci.yml"><img src="https://github.com/xmarston/stream-pkm-update-counter/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/coverage-99%25-brightgreen" alt="Coverage">
+  <img src="https://img.shields.io/badge/python-3.13+-blue" alt="Python 3.13+">
+</p>
+
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
