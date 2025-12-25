@@ -23,6 +23,7 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
+        <li><a href="#standalone-executable">Standalone Executable</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
         <li><a href="#docker">Docker</a></li>
@@ -50,6 +51,21 @@ The goal of this project is to automate the repetitive task of increasing the va
 ## Getting Started
 
 To get this running in your local environment we need to do some steps before actually running it.
+
+### Standalone Executable
+
+The easiest way to run the counter is to download the pre-built executable from the [Releases](https://github.com/xmarston/stream-pkm-update-counter/releases) page. No installation required - all dependencies including Tesseract OCR are bundled.
+
+**Windows:**
+```bash
+stream-counter-windows.exe -i 0 -f counter.txt -p "PHRASE_TO_SEARCH"
+```
+
+**Linux:**
+```bash
+chmod +x stream-counter-linux
+./stream-counter-linux -i 0 -f counter.txt -p "PHRASE_TO_SEARCH"
+```
 
 ### Prerequisites
 

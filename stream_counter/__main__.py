@@ -6,6 +6,7 @@ import threading
 from .counter import Counter
 from .capture import VideoCapture
 from .detector import PhraseDetector
+from .tesseract_config import configure_tesseract
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,6 +25,8 @@ def parse_args():
 
 
 def main():
+    configure_tesseract()
+
     stop_event = threading.Event()
 
     def signal_handler(signum, frame):
