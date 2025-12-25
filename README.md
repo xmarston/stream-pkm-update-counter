@@ -19,6 +19,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#docker">Docker</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -34,10 +35,10 @@ The goal of this project is to automate the repetitive task of increasing the va
 
 ### Built With
 
-Script is built with:
-* Python 3.8
+* Python 3.13+
 * [OpenCV](https://opencv.org/)
 * [Tesseract](https://github.com/tesseract-ocr/tesseract)
+* Docker (optional)
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -54,25 +55,45 @@ brew install tesseract
 
 ### Installation
 
-After we installed all the things that were prerequisites now we can proceed to install the python libraries we need to run the script. For this we simply run this comando:
+After installing the prerequisites, install the Python dependencies:
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
-If the installation was successful we can run the command.
+### Docker
+
+Alternatively, you can run the project using Docker:
+
+```bash
+docker compose up --build
+```
+
+This will build the image with all dependencies (including Tesseract) and start the counter.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-The command accepts three arguments that are required:
-* inputVideo: This is the number that indicates your capture card, in most cases it works with 0 but you'll need to test if not.
-* file: File where the number to increase is stored.
-* phrase: This is the phrase that the process will look for it in the video stream and update the counter.
+The command accepts the following arguments:
 
-So the command will look like this:
+| Argument | Short | Required | Description |
+|----------|-------|----------|-------------|
+| `-inputVideo` | `-i` | Yes | Capture device number (usually 0) |
+| `-file` | `-f` | Yes | File where the counter is stored |
+| `-phrase` | `-p` | Yes | Phrase to detect in the video stream |
+| `-debounce` | `-d` | No | Seconds between detections (default: 15) |
+
+**Run with Python:**
 ```bash
-python3 process_stream.py -inputVideo 0 -file PATH_OF_THE_FILE -phrase "PHRASE_TO_SEARCH"
+python -m stream_counter -i 0 -f counter.txt -p "PHRASE_TO_SEARCH"
+
+# Or using the wrapper script
+python main.py -i 0 -f counter.txt -p "PHRASE_TO_SEARCH"
+```
+
+**Run with Docker:**
+```bash
+docker compose run stream-counter -i 0 -f /data/counter.txt -p "PHRASE_TO_SEARCH" -d 10
 ```
 
 ## Notes

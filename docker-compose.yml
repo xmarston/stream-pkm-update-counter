@@ -1,0 +1,11 @@
+services:
+  stream-counter:
+    build: .
+    volumes:
+      - .:/app
+      - ./data:/data
+    devices:
+      - /dev/video0:/dev/video0
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["-i", "0", "-f", "/data/counter.txt", "-p", "SHINY"]

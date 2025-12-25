@@ -1,2 +1,10 @@
 .idea/
 .DS_Store
+__pycache__/
+*.pyc
+.venv/
+venv/
+data/*.txt
+.pytest_cache/
+.coverage
+counter.txt
