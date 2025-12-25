@@ -1,7 +1,7 @@
 import argparse
 import logging
+import signal
 import time
-import cv2
 
 from .counter import Counter
 from .capture import VideoCapture
@@ -12,6 +12,13 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+running = True
+
+
+def signal_handler(signum, frame):
+    global running
+    running = False
 
 
 def parse_args():
@@ -24,6 +31,10 @@ def parse_args():
 
 
 def main():
+    global running
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+
     args = parse_args()
 
     counter = Counter(args.file)
@@ -34,8 +45,9 @@ def main():
             return 1
 
         logger.info("Starting detection for phrase: '%s'", args.phrase)
+        logger.info("Press Ctrl+C to stop")
 
-        while True:
+        while running:
             frame = capture.read_frame()
             if frame is None:
                 logger.warning("Failed to read frame, retrying...")
@@ -43,10 +55,7 @@ def main():
                 continue
 
             detector.analyze_frame_async(frame)
-
-            key = cv2.waitKey(1000)
-            if key == 27:  # ESC key
-                break
+            time.sleep(1)
 
     logger.info("Shutting down...")
     return 0
