@@ -1,6 +1,7 @@
 import argparse
 import logging
 import signal
+import threading
 import time
 
 from .counter import Counter
@@ -13,13 +14,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-running = True
-
-
-def signal_handler(signum, frame):
-    global running
-    running = False
-
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Stream counter for shiny hunting automation")
@@ -31,7 +25,11 @@ def parse_args():
 
 
 def main():
-    global running
+    stop_event = threading.Event()
+
+    def signal_handler(signum, frame):
+        stop_event.set()
+
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
@@ -47,7 +45,7 @@ def main():
         logger.info("Starting detection for phrase: '%s'", args.phrase)
         logger.info("Press Ctrl+C to stop")
 
-        while running:
+        while not stop_event.is_set():
             frame = capture.read_frame()
             if frame is None:
                 logger.warning("Failed to read frame, retrying...")
