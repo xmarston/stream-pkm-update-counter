@@ -19,7 +19,7 @@ if os.path.exists(tesseract_src):
     tesseract_datas = [(tesseract_src, tesseract_dest)]
 
 a = Analysis(
-    ['stream_counter/__main__.py'],
+    ['entry.py'],
     pathex=[],
     binaries=[],
     datas=tesseract_datas,
