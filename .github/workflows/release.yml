@@ -21,16 +21,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-build.txt
 
-      - name: Download Tesseract
+      - name: Install Tesseract
         shell: pwsh
         run: |
-          $tesseractUrl = "https://github.com/UB-Mannheim/tesseract/releases/download/v5.5.0.20241111/tesseract-ocr-w64-setup-5.5.0.20241111.exe"
-          Invoke-WebRequest -Uri $tesseractUrl -OutFile tesseract-installer.exe
-          Start-Process -FilePath .\tesseract-installer.exe -ArgumentList '/S', '/D=C:\Tesseract' -Wait
+          choco install tesseract -y --no-progress
 
           # Copy Tesseract to project directory
           New-Item -ItemType Directory -Force -Path tesseract-win
-          Copy-Item -Path "C:\Tesseract\*" -Destination "tesseract-win" -Recurse
+          Copy-Item -Path "C:\Program Files\Tesseract-OCR\*" -Destination "tesseract-win" -Recurse
 
       - name: Build executable
         env:
