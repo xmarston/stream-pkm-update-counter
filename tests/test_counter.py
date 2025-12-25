@@ -82,3 +82,26 @@ class TestCounter:
                 t.join()
 
             assert counter.get_value() == 10
+
+    def test_increment_io_error(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "counter.txt")
+            counter = Counter(path)
+
+            # Remove the file to cause IOError on next increment
+            os.remove(path)
+
+            result = counter.increment()
+            assert result is None
+
+    def test_increment_value_error(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = os.path.join(tmpdir, "counter.txt")
+            counter = Counter(path)
+
+            # Write invalid content to cause ValueError
+            with open(path, "w") as f:
+                f.write("not_a_number")
+
+            result = counter.increment()
+            assert result is None
