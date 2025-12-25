@@ -2,7 +2,6 @@ import argparse
 import logging
 import signal
 import threading
-import time
 
 from .counter import Counter
 from .capture import VideoCapture
@@ -49,11 +48,11 @@ def main():
             frame = capture.read_frame()
             if frame is None:
                 logger.warning("Failed to read frame, retrying...")
-                time.sleep(0.1)
+                stop_event.wait(0.1)
                 continue
 
             detector.analyze_frame_async(frame)
-            time.sleep(1)
+            stop_event.wait(1)
 
     logger.info("Shutting down...")
     return 0
