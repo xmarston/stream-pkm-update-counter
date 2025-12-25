@@ -7,3 +7,4 @@ venv/
 data/*.txt
 .pytest_cache/
 .coverage
+counter.txt
